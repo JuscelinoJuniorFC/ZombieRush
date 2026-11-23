@@ -1,0 +1,48 @@
+<canvas id=c width=512 height=512></canvas><script>
+const c=document.getElementById('c'),x=c.getContext('2d');let seed=5;const R=()=>(seed=(seed*16807)%2147483647)/2147483647;
+// fundo
+let g=x.createRadialGradient(256,230,40,256,256,360);g.addColorStop(0,'#5a0d0d');g.addColorStop(.6,'#220606');g.addColorStop(1,'#060202');
+x.fillStyle=g;x.beginPath();x.roundRect(8,8,496,496,70);x.fill();
+x.save();x.beginPath();x.roundRect(8,8,496,496,70);x.clip();
+// pescoço/ombros
+x.fillStyle='#1a1d16';x.beginPath();x.moveTo(110,512);x.quadraticCurveTo(130,430,200,410);x.lineTo(312,410);x.quadraticCurveTo(382,430,402,512);x.fill();
+// cabeça
+g=x.createRadialGradient(230,200,30,256,250,230);g.addColorStop(0,'#a9b497');g.addColorStop(.55,'#78856a');g.addColorStop(1,'#323c2c');
+x.fillStyle=g;x.beginPath();x.moveTo(256,40);x.bezierCurveTo(390,40,420,170,400,260);x.bezierCurveTo(392,330,360,370,330,420);x.lineTo(182,420);x.bezierCurveTo(152,370,120,330,112,260);x.bezierCurveTo(92,170,122,40,256,40);x.fill();
+x.strokeStyle='#0d110b';x.lineWidth=5;x.stroke();
+// cabelo ralo
+x.strokeStyle='#14110d';x.lineWidth=4;for(let i=0;i<26;i++){const px=150+R()*210,py=48+R()*34;x.beginPath();x.moveTo(px,py);x.quadraticCurveTo(px+(R()-.5)*30,py-18,px+(R()-.5)*44,py-34-R()*14);x.stroke()}
+// feridas na testa
+x.fillStyle='#5b0c0c';x.beginPath();x.moveTo(300,72);x.lineTo(352,92);x.lineTo(338,140);x.lineTo(310,118);x.lineTo(286,128);x.closePath();x.fill();
+x.fillStyle='#8a1414';x.beginPath();x.moveTo(306,84);x.lineTo(338,98);x.lineTo(330,122);x.lineTo(312,108);x.closePath();x.fill();
+// rachaduras / veias
+x.strokeStyle='rgba(30,40,24,.75)';x.lineWidth=3;for(let i=0;i<9;i++){let px=150+R()*210,py=110+R()*200;x.beginPath();x.moveTo(px,py);for(let k=0;k<4;k++){px+=(R()-.5)*40;py+=10+R()*22;x.lineTo(px,py)}x.stroke()}
+// olheiras profundas
+for(const ex of [196,316]){
+  g=x.createRadialGradient(ex,205,4,ex,205,70);g.addColorStop(0,'#000');g.addColorStop(.65,'#070806');g.addColorStop(1,'rgba(20,25,16,0)');x.fillStyle=g;x.beginPath();x.ellipse(ex,205,60,52,ex<256?-.15:.15,0,7);x.fill();
+  // brilho do olho
+  g=x.createRadialGradient(ex,208,0,ex,208,30);g.addColorStop(0,'#ffeedd');g.addColorStop(.18,'#ff3a1a');g.addColorStop(.6,'#a00505');g.addColorStop(1,'rgba(120,0,0,0)');x.fillStyle=g;x.beginPath();x.arc(ex,208,30,0,7);x.fill();
+  x.fillStyle='#000';x.beginPath();x.ellipse(ex,209,5,13,0,0,7);x.fill();
+}
+// sobrancelha pesada
+x.strokeStyle='#0b0d09';x.lineWidth=11;x.lineCap='round';x.beginPath();x.moveTo(140,168);x.lineTo(236,190);x.stroke();x.beginPath();x.moveTo(376,168);x.lineTo(280,190);x.stroke();
+// nariz sem cartilagem
+x.fillStyle='#050505';x.beginPath();x.moveTo(246,262);x.lineTo(256,236);x.lineTo(266,262);x.quadraticCurveTo(256,272,246,262);x.fill();
+// boca aberta com dentes
+x.fillStyle='#0a0303';x.beginPath();x.moveTo(170,318);x.quadraticCurveTo(256,300,342,318);x.quadraticCurveTo(348,392,256,404);x.quadraticCurveTo(164,392,170,318);x.fill();
+x.fillStyle='#d9d0b0';
+for(let i=0;i<7;i++){const px=184+i*24,h=24+R()*14;x.beginPath();x.moveTo(px,312+Math.sin(i*.45)*2);x.lineTo(px+22,312);x.lineTo(px+11+(R()-.5)*6,312+h);x.closePath();x.fill()}
+for(let i=0;i<6;i++){const px=192+i*25,h=20+R()*12;x.beginPath();x.moveTo(px,402);x.lineTo(px+22,400);x.lineTo(px+11,402-h);x.closePath();x.fill()}
+x.fillStyle='#7d0c0c';x.beginPath();x.ellipse(256,372,52,16,0,0,7);x.fill();
+// bochecha rasgada
+x.fillStyle='#2a0505';x.beginPath();x.moveTo(340,318);x.lineTo(392,330);x.lineTo(372,372);x.lineTo(338,352);x.closePath();x.fill();
+x.fillStyle='#d9d0b0';for(let i=0;i<4;i++){x.fillRect(346+i*9,326+i*4,5,16)}
+// pontos de sutura
+x.strokeStyle='#0a0a0a';x.lineWidth=4;x.beginPath();x.moveTo(150,282);x.lineTo(206,300);x.stroke();for(let i=0;i<5;i++){x.beginPath();x.moveTo(158+i*11,270+i*4.5);x.lineTo(166+i*11,306+i*4)}x.stroke();
+// sangue escorrendo
+x.fillStyle='#9a0c0c';for(const [px,len,w] of [[205,130,9],[236,70,7],[290,150,10],[330,90,7],[360,170,9]]){x.beginPath();x.roundRect(px-w/2,318,w,len,w/2);x.fill();x.beginPath();x.arc(px,318+len,w*.85,0,7);x.fill()}
+// sombra final
+g=x.createRadialGradient(256,256,180,256,256,330);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.65)');x.fillStyle=g;x.fillRect(0,0,512,512);
+x.restore();
+x.strokeStyle='#6a0e0e';x.lineWidth=6;x.beginPath();x.roundRect(8,8,496,496,70);x.stroke();
+</script>
